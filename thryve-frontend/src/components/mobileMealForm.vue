@@ -114,7 +114,6 @@ const addMeal = async () => {
             :max="today"
             :disabled="isLoading"
           />
-          <i class="pi pi-calendar calendar-icon"></i>
         </div>
       </div>
     </div>
@@ -186,13 +185,6 @@ input:focus {
   height: 42px;
   padding-right: 2.5rem; 
   cursor: pointer;
-}
-
-.calendar-icon {
-  position: absolute;
-  right: 2rem;
-  color: var(--muted-foreground);
-  pointer-events: none;
 }
 
 /* Submit button */

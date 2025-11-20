@@ -1,7 +1,7 @@
 import axios from "axios";
 import api from "../utils/api"; 
 
-const API = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const API = import.meta.env.VITE_API_URL || "http://localhost:3001/api";
 
 export async function register(payload) {
   const res = await axios.post(`${API}/auth/register`, payload);

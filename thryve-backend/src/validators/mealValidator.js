@@ -27,12 +27,15 @@ exports.createMealValidator = [
     .toDate()
     .withMessage("Date must be a valid date")
     .custom((value) => {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
+      // Get current date in Philippine time (UTC+8)
+      const now = new Date();
+      const philippineTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Manila' }));
+      philippineTime.setHours(0, 0, 0, 0);
+      
       const inputDate = new Date(value);
       inputDate.setHours(0, 0, 0, 0);
 
-      if (inputDate > today) {
+      if (inputDate > philippineTime) {
         throw new Error("Date cannot be in the future");
       }
       return true;

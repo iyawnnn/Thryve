@@ -160,6 +160,7 @@
 import { ref, computed, onMounted, watch } from "vue";
 import DefaultLayout from "../components/Layout/DefaultLayout.vue";
 import api from "@/utils/api";
+import thryveModel from "@/assets/uploads/thryve-model.PNG";
 
 /* ---------- profile state ---------- */
 const userName = ref("");
@@ -174,7 +175,7 @@ const height = ref(""); // internal cm
 const heightDisplay = ref("");
 const heightUnit = ref("cm");
 
-const defaultAvatar = "https://i.pravatar.cc/40?img=12";
+const defaultAvatar = thryveModel;
 const avatarFile = ref(null);
 
 /* goals & quick logs */

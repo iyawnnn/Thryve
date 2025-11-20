@@ -32,9 +32,12 @@ app.use(express.json()); // Parse incoming JSON requests
 app.use(morgan('dev')); // Logs requests in dev format
 
 // CORS setup (restricts who can access API)
+// Temporarily allow all origins for testing
 app.use(cors({
-  origin: FRONTEND_ORIGIN, // Only allow requests from frontend
-  methods: ['GET','POST','PUT','DELETE']
+  origin: true, // Allow all origins for now
+  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+  credentials: true, // Allow credentials (cookies, authorization headers)
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // ====== RATE LIMITING ====== //
@@ -47,7 +50,26 @@ app.use('/api/auth', authLimiter);
 
 // ====== HEALTH CHECK ====== //
 app.get('/api/health', (req, res) => {
-  res.json({ ok: true, version: '0.1.0' });
+  res.json({ 
+    ok: true, 
+    version: '0.1.0',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development',
+    database: 'connected' // We'll enhance this later with actual DB status
+  });
+});
+
+// Additional health endpoint with more details
+app.get('/api/status', (req, res) => {
+  res.json({
+    status: 'healthy',
+    uptime: process.uptime(),
+    memory: process.memoryUsage(),
+    pid: process.pid,
+    platform: process.platform,
+    nodeVersion: process.version,
+    timestamp: new Date().toISOString()
+  });
 });
 
 // ====== ROUTES ====== //

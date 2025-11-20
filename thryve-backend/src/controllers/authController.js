@@ -120,7 +120,26 @@ exports.forgotPassword = async (req, res) => {
     user.resetTokenExpiry = new Date(Date.now() + 3600000); // 1 hour
     await user.save();
 
-    const resetLink = `${process.env.FRONTEND_URL}/reset-password/${token}`;
+    // Use environment variable with fallback to production Vercel URL
+    let frontendUrl;
+    
+    if (process.env.NODE_ENV === 'production') {
+      // Production: Use Railway environment variable or default to Vercel URL
+      frontendUrl = process.env.FRONTEND_URL || 
+                   'https://thryve-ver2-git-master-kians-projects-0c2bedf0.vercel.app';
+    } else {
+      // Development: Use local frontend
+      frontendUrl = process.env.FRONTEND_URL || 
+                   process.env.FRONTEND_ORIGIN || 
+                   'http://localhost:5173';
+    }
+    
+    const resetLink = `${frontendUrl}/reset-password/${token}`;
+    
+    console.log('🔗 Reset link generated:', resetLink);
+    console.log('🌐 Frontend URL used:', frontendUrl);
+    console.log('🌍 Environment:', process.env.NODE_ENV);
+    
     const html = `
   <div style="font-family: Geist, sans-serif; line-height: 1.6; color: #333;">
     <h2 style="color: #2c3e50;">Password Reset Request</h2>
@@ -140,12 +159,25 @@ exports.forgotPassword = async (req, res) => {
   </div>
 `;
 
-    console.log("Sending email to:", user.email); // <-- check here
-    await sendEmail(user.email, "Password Reset", html);
-
-    res.json({ message: "Check your email for reset link" });
+    console.log("📧 Sending email to:", user.email);
+    console.log("🔧 About to call sendEmail function...");
+    
+    try {
+      const emailResult = await sendEmail(user.email, "Password Reset", html);
+      console.log("✅ Email sent successfully, result:", emailResult);
+      res.json({ message: "Check your email for reset link" });
+    } catch (emailError) {
+      console.error('❌ Failed to send email in forgot password:', emailError);
+      console.error('❌ Email error name:', emailError.name);
+      console.error('❌ Email error message:', emailError.message);
+      res.status(500).json({ 
+        error: "Failed to send email. Please try again later.",
+        details: process.env.NODE_ENV === 'development' ? emailError.message : undefined
+      });
+    }
+    
   } catch (err) {
-    console.error(err);
+    console.error('❌ Forgot password error:', err);
     res.status(500).json({ error: "Something went wrong" });
   }
 };

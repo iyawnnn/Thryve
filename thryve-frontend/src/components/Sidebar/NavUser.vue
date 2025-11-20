@@ -11,12 +11,13 @@
 <script setup>
 import { computed } from "vue";
 import { useAuthStore } from "../../stores/auth";
+import thryveModel from "@/assets/uploads/thryve-model.PNG";
 
 const auth = useAuthStore();
 
 const user = computed(() => auth.user);
 
-const defaultAvatar = "https://i.pravatar.cc/40?img=12";
+const defaultAvatar = thryveModel;
 </script>
 
 <style scoped>

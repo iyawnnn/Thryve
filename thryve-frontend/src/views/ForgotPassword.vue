@@ -35,8 +35,9 @@ const submit = async () => {
 
   isLoading.value = true; // ⏳ show loading
   try {
+    const baseURL = import.meta.env.VITE_API_URL || "http://localhost:3001/api";
     const res = await axios.post(
-      "http://localhost:5000/api/auth/forgot-password",
+      `${baseURL}/auth/forgot-password`,
       { email: email.value }
     );
     message.value = res.data.message;
@@ -47,8 +48,6 @@ const submit = async () => {
     isLoading.value = false; // ✅ hide loading
   }
 };
-
-
 
 </script>
 
@@ -84,7 +83,12 @@ const submit = async () => {
           </div>
 
           <!-- Backend Success & Error Messages -->
-          <p v-if="message" class="success-message">{{ message }}</p>
+          <p v-if="message" class="success-message">
+            {{ message }}<br />
+            <small style="color:#888">
+              If you don’t see the email, please check your Spam or Promotions folder.
+            </small>
+          </p>
           <p v-if="errorMessage && !(isEmailFocused || email)" class="error-message">
             {{ errorMessage }}
           </p>

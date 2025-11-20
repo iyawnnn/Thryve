@@ -2,6 +2,7 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import App from './App.vue';
 import router from './router';
+import { inject } from '@vercel/analytics';
 
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
@@ -64,5 +65,8 @@ const auth = useAuthStore(pinia);
 if (auth.token) {
   auth.fetchMe();
 }
+
+// Initialize Vercel Analytics
+inject();
 
 app.mount('#app');

@@ -6,7 +6,6 @@ import { meals } from "../composables/useMeals.js";
 import DatePicker from "primevue/datepicker";
 
 const toast = useToast();
-
 const emit = defineEmits(["mealAdded"]);
 
 const foodName = ref("");
@@ -16,7 +15,16 @@ const date = ref(new Date());
 const today = new Date();
 const isLoading = ref(false);
 
+// Strip time for date-only comparisons
 const stripTime = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+
+// ✅ FIXED: Send the exact local date selected by the user (no timezone offset)
+const formatDateForServer = (d) => {
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
 
 const addMeal = async () => {
   if (!foodName.value.trim()) {
@@ -28,6 +36,7 @@ const addMeal = async () => {
     });
     return;
   }
+
   if (calories.value === null || calories.value < 0) {
     toast.add({
       severity: "warn",
@@ -37,6 +46,7 @@ const addMeal = async () => {
     });
     return;
   }
+
   if (protein.value !== null && protein.value < 0) {
     toast.add({
       severity: "warn",
@@ -46,6 +56,7 @@ const addMeal = async () => {
     });
     return;
   }
+
   if (stripTime(date.value) > stripTime(today)) {
     toast.add({
       severity: "warn",
@@ -59,13 +70,14 @@ const addMeal = async () => {
   isLoading.value = true;
 
   try {
+    const formattedDate = formatDateForServer(date.value);
+    console.log("📤 Final date sent to server (LOCAL):", formattedDate);
+
     const res = await api.post("/meals", {
       foodName: foodName.value.trim(),
       calories: Number(calories.value),
       protein: protein.value ? Number(protein.value) : 0,
-      date: `${date.value.getFullYear()}-${(date.value.getMonth() + 1)
-        .toString()
-        .padStart(2, "0")}-${date.value.getDate().toString().padStart(2, "0")}`,
+      date: formattedDate,
     });
 
     meals.value.unshift(res.data);
@@ -96,6 +108,7 @@ const addMeal = async () => {
   }
 };
 </script>
+
 
 <template>
   <form @submit.prevent="addMeal" class="form-grid">
@@ -223,6 +236,7 @@ input:focus,
 
 .btn-submit {
   color: var(--primary-foreground);
+  background-color: var(--primary);
   border: none;
   padding: 0.5rem;
   border-radius: var(--radius);
@@ -297,4 +311,5 @@ input:focus,
 :deep(.p-datepicker:focus-within .p-datepicker-dropdown) {
   border-color: var(--primary) !important;
 }
+
 </style>
