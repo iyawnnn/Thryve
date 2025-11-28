@@ -1,25 +1,95 @@
-# Thryve - Health and Fitness Web Application
+# Thryve – Health and Fitness Web Application
 
-## Introduction / Background
-Thryve is a Health and Fitness web application developed using the MEVN stack (MongoDB, Express.js, Vue.js, Node.js). It provides a unified platform for users to manage various aspects of their health and wellness. The application includes functionalities for logging workouts, tracking meals, monitoring water intake, recording sleep patterns, visualizing progress through dashboard analytics, and earning achievements. Thryve also supports essential account management features such as user registration, login, password recovery, and profile customization, ensuring a secure and personalized experience.
+Thryve is a full-stack Health and Fitness web application built using the MEVN stack (MongoDB, Express.js, Vue.js, Node.js). It provides a unified platform for users to monitor workouts, meals, water intake, and sleep while offering personalized daily targets, dashboard analytics, and achievement tracking. The platform integrates multiple health metrics into a single system, supporting secure user authentication, profile customization, and visual progress insights. Thryve is designed for fitness enthusiasts, health-conscious individuals, and anyone looking for structured guidance to maintain a healthy lifestyle.
 
-The main target users are fitness enthusiasts, health-conscious individuals, and anyone seeking structured guidance to maintain a healthy lifestyle. By consolidating multiple health-tracking features into a single platform, Thryve helps users monitor their progress, stay motivated, and achieve their personal wellness goals. Users can customize their profiles and daily targets, including age, height, weight, calorie intake, protein intake, and workout duration.
+## Tech Stack
 
-## Features
-- User registration, login, and password recovery  
-- Profile management and daily target customization  
-- Workout logging and tracking  
-- Meal tracking and calorie management  
-- Water intake monitoring  
-- Sleep tracking  
-- Dashboard analytics with visual progress insights  
-- Goal setting and achievement tracking  
-- Integrated platform combining multiple health metrics in one place  
+### Frontend
+- **Framework & State Management:** Vue 3, Pinia
+- **Routing & API:** Vue Router, Axios
+- **Build Tool & Plugins:** Vite, @vitejs/plugin-vue
+- **UI Libraries & Styling:** PrimeVue, PrimeIcons, @primeuix/themes
+- **Date & Animation:** Flatpickr, tw-animate-css
+- **Charts & Visualization:** Chart.js, ApexCharts, vue3-apexcharts
+- **Utility Libraries:** @vueuse/core, clsx, class-variance-authority, lucide-vue-next
+- **Analytics:** @vercel/analytics
+
+### Backend
+- **Runtime & Framework:** Node.js, Express.js
+- **Database & ORM:** MongoDB, Mongoose
+- **Authentication & Security:** JWT (jsonwebtoken), bcrypt, bcryptjs, helmet, express-rate-limit
+- **Validation:** express-validator, Joi
+- **Email Services:** SendGrid (@sendgrid/mail)
+- **CORS & Middleware:** cors
+- **Logging & Dev Tools:** morgan, nodemon, eslint, prettier
+- **Environment Variables:** dotenv
+
+## Core Features
+
+### User & Profile
+- User registration and login
+- JWT-based authentication
+- Password recovery via SendGrid
+- Profile setup (age, height, weight, gender)
+- Custom daily targets: calories, protein, workout duration
+
+### Health Tracking Modules
+- Workout logging and tracking
+- Meal and calorie tracking
+- Water intake monitoring
+- Sleep tracking
+
+### Insights & Motivation
+- Dashboard analytics with charts for weekly/daily progress
+- Achievement and goal tracking
+
+### Integrated System
+- Unified platform combining multiple health metrics
+- Modular and scalable architecture
+- Responsive and consistent user interface
+
+
+## Development Workflow
+
+### 1. Planning & Architecture
+- Defined system workflow and data relationships
+- Designed MEVN folder structure and API endpoints
+- Outlined data models for users, workouts, meals, sleep, water intake, and achievements
+
+### 2. Backend Implementation
+- Built REST API routes for all modules
+- Integrated SendGrid for email services
+- Implemented JWT authentication and middleware
+- Added validation, error handling, and security measures
+
+### 3. Frontend Implementation
+- Configured Vue 3 with Vite, Router, and Pinia
+- Built reusable components for forms, dashboards, and trackers
+- Integrated frontend with backend API endpoints
+- Developed responsive UI with charts, animations, and notifications
+
+### 4. Testing & Refinement
+- Tested API endpoints and error responses
+- Debugged CORS, authentication, and state management issues
+- Optimized user experience and modular component architecture
+
+## Key Takeaways
+- Developed a full MEVN stack application end-to-end
+- Implemented secure authentication using JWT and bcrypt
+- Built RESTful APIs with validation and error handling
+- Modeled data efficiently with Mongoose for MongoDB
+- Integrated SendGrid for email recovery and notifications
+- Created dynamic, interactive dashboards with charts
+- Designed a modular and scalable frontend with Vue 3 and Pinia
+- Managed environment variables safely for public repositories
+- Applied frontend libraries and utilities for responsive, modern UI
+
 
 ## Installation Instructions
-1. Clone the repository:
+### 1. Clone the Repository
 ```bash
-git clone https://github.com/iyawnnn/6WCSERVER-WD-304-Thryve.git
+git clone https://github.com/iyawnnn/Thryve.git
+cd Thryve
 ```
 
 2. Navigate to the project directory:
@@ -50,6 +120,8 @@ FRONTEND_ORIGIN=http://localhost:5173
 FRONTEND_URL=http://localhost:5173
 EMAIL_USER=<email@example.com>
 EMAIL_PASS=<email_password>
+SENDGRID_API_KEY=<your_sendgrid_api_key>
+EMAIL_FROM=<verified_sender_email>
 ```
 6. Create a .env file (frontend root) then, fill up the environment variables:
 ```bash
